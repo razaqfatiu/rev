@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <% let res = arts; %>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+
+    <div style="width: 100%; display: flex">
+      <img
+        id="image"
+        src="<%= arts[0].primaryImage %>"
+        width="70%"
+        onclick="clrInter()"
+      />
+      <div style="width: 30%; margin-left: 2%" id="contents" class="inactive">
+        <p id="accessionNumber"></p>
+        <p id="accessionYear"></p>
+        <p id="artistBeginDate"></p>
+        <p id="artistDisplayName"></p>
+        <p id="artistDisplayBio"></p>
+        <p id="department"></p>
+        <p id="medium"></p>
+      </div>
+    </div>
+
+    <% var test = arts %>
+
+    <script>
+      const res = <%- JSON.stringify(test) %>
+      let active = true
+      const getStuff = (par) => document.querySelector(`#${par}`)
+
+      let current = 0;
+      let length = res.length
+      let image = document.querySelector('#image');
+      let contents = getStuff('contents')
+      let accessionNumber = getStuff('accessionNumber')
+      let accessionYear = getStuff('accessionYear')
+      let artistBeginDate = getStuff('artistBeginDate')
+      let artistDisplayName = getStuff('artistDisplayName')
+      let artistDisplayBio = getStuff('artistDisplayBio')
+      let department = getStuff('department')
+
+
+      const populate = () => {
+        if(active){
+
+          image.src = res[current].primaryImage;
+          accessionNumber.innerHTML = 'Accession Number: ' + res[current].accessionNumber
+          accessionYear.innerHTML = 'Accession Year: ' + res[current].accessionYear
+          artistBeginDate.innerHTML = 'Artist Begin Date: ' + res[current].artistBeginDate
+          artistDisplayName.innerHTML = 'Artist Display Name: ' + res[current].artistDisplayName
+          artistDisplayBio.innerHTML = 'Artist Display Bio: ' + res[current].artistDisplayBio
+          department.innerHTML = 'Department: ' + res[current].department
+
+          if (current < length - 1) {
+            current++;
+          } else {
+            current = 0;
+          }
+        }
+      }
+
+      const timeout = setInterval(populate, 10000);
+
+      const clrInter = () => {
+        contents.classList.toggle('inactive')
+        active = !active
+      }
+    </script>
+  </body>
+</html>
